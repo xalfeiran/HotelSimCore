@@ -42,7 +42,7 @@ This diagram represents the main lifecycle of the simulation: how reservations a
 
 ```mermaid
 flowchart TD
-    A[Simulation Start] --> B[Load Configuration (config.yaml)]
+    A[Simulation Start] --> B[Load Configuration → config.yaml]
     B --> C[Generate Rooms & Staff]
     C --> D[Start Reservation Simulation]
     D -->|Every X seconds| E[New Reservation Event]
