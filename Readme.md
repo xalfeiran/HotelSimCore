@@ -1,95 +1,113 @@
 # 🏨 Hotel Simulation Core
 
-**Hotel Simulation Core** es un entorno simulado de operaciones hoteleras enfocado en el área de **Ama de Llaves (Housekeeping)**.  
-Su objetivo es servir como base para experimentar, desarrollar e integrar sistemas de planificación, asignación de tareas y productividad dentro de un hotel virtual "vivo".
+**Hotel Simulation Core** is a simulated environment for hotel operations, focused on the **Housekeeping** area.  
+It serves as a foundation for experimenting, developing, and integrating planning and task allocation systems within a living virtual hotel.
 
-El sistema genera datos dinámicamente: habitaciones, personal, reservas y eventos simulados de check-in y check-out, todo configurable desde un archivo YAML.
-
----
-
-## 🚀 Características principales
-
-- Configuración flexible de hotel, edificios, tipos de habitación y personal.  
-- Generación automática de habitaciones, personal y reservaciones.  
-- Simulación continua de nuevas reservas con tiempos y estancias aleatorias.  
-- API REST abierta para consultar el estado actual del hotel.  
-- Arquitectura modular lista para expandirse (housekeeping, analytics, mantenimiento, etc.).  
-- Construido con **FastAPI**, ideal para proyectos open source o integraciones vía API.
+The system dynamically generates data: rooms, staff, reservations, and simulated check-in/check-out events — all configurable through a YAML file.
 
 ---
 
-## 🧩 Estructura del proyecto
+## 🚀 Key Features
 
+- Flexible configuration for hotel size, buildings, room types, and staff.  
+- Automatic generation of rooms, staff, and reservations.  
+- Continuous simulation of new bookings with random durations.  
+- Open REST API to query current hotel state.  
+- Modular architecture ready for extensions (housekeeping, analytics, maintenance, etc.).  
+- Built with **FastAPI**, ideal for open source projects and integrations.
+
+---
+
+## 🧩 Project Structure
+
+```
 hotel-sim-core/
 │
-├── main.py # Punto de entrada principal
-├── api.py # Endpoints REST
-├── simulation.py # Lógica de simulación en tiempo real
-├── models.py # Modelos de datos (habitaciones, staff, reservas)
-├── config.yaml # Archivo de configuración del hotel
+├── main.py                 # Entry point
+├── api.py                  # REST endpoints
+├── simulation.py           # Simulation engine
+├── models.py               # Data models (rooms, staff, reservations)
+├── config.yaml             # Hotel configuration file
 ├── data/
-│ └── seeds.py # Generadores de datos iniciales
-├── requirements.txt # Dependencias de Python
+│   └── seeds.py            # Data generators
+├── requirements.txt        # Python dependencies
 └── README.md
-
+```
 
 ---
 
-## 🧠 Flujo de simulación
+## 🧠 Simulation Flow
 
-Este diagrama representa el ciclo principal de la simulación:  
-cómo las reservas y los eventos afectan al área de Ama de Llaves y al hotel en general.
+This diagram represents the main lifecycle of the simulation: how reservations and events affect the housekeeping workflow.
 
 ```mermaid
 flowchart TD
-    A[Inicio del simulador] --> B[Carga de configuración (config.yaml)]
-    B --> C[Generación de habitaciones y personal]
-    C --> D[Simulación de reservas]
-    D -->|Cada X segundos| E[Evento: Nueva reserva]
-    E --> F[Habitación marcada como ocupada]
-    F --> G[Esperar checkout]
-    G -->|Evento: Checkout| H[Crear tarea de limpieza]
-    H --> I[Asignar camarista disponible]
-    I --> J[Actualizar métricas de productividad]
+    A[Simulation Start] --> B[Load Configuration (config.yaml)]
+    B --> C[Generate Rooms & Staff]
+    C --> D[Start Reservation Simulation]
+    D -->|Every X seconds| E[New Reservation Event]
+    E --> F[Room Marked as Occupied]
+    F --> G[Wait for Checkout]
+    G -->|Checkout Event| H[Create Cleaning Task]
+    H --> I[Assign Available Housekeeper]
+    I --> J[Update Productivity Metrics]
     J --> D
+```
 
-
----
-
-## ⚙️ Requisitos
-
-- Python **3.9 o superior**
-- pip (instalador de paquetes)
-- Git (opcional, para clonar el repositorio)
+💡 Future phases will include:
+- Maintenance and repair events.
+- Supervisor reports.
+- Integration with external booking or IoT systems.
 
 ---
 
-## 🧰 Instalación
+## ⚙️ Requirements
 
-### 1. Clona el repositorio
+- Python **3.9+**
+- pip
+- Git (optional, for cloning)
+
+---
+
+## 🧰 Installation
+
+### 1. Clone the repository
 ```bash
-git clone https://github.com/tuusuario/hotel-sim-core.git
+git clone https://github.com/youruser/hotel-sim-core.git
 cd hotel-sim-core
+```
 
-2. Crea un entorno virtual
+### 2. Create a virtual environment
+```bash
 python3 -m venv venv
+```
 
-3. Activa el entorno virtual
-macOS / Linux:
+### 3. Activate the environment
+
+#### macOS / Linux:
+```bash
 source venv/bin/activate
+```
 
-Windows:
+#### Windows:
+```bash
 venv\Scripts\Activate.ps1
+```
 
-4. Instala las dependencias
+### 4. Install dependencies
+```bash
 pip install -r requirements.txt
+```
 
-⚙️ Configuración
+---
 
-Edita el archivo config.yaml para personalizar tu simulación.
+## ⚙️ Configuration
 
-Ejemplo:
+Edit the `config.yaml` file to customize your simulation.
 
+Example:
+
+```yaml
 hotel:
   name: "Hotel Simulado Riviera"
   num_buildings: 3
@@ -115,55 +133,78 @@ simulation:
   reservation_interval_seconds: 15
   avg_stay_days: 3
   seed: 42
+```
 
-▶️ Ejecución
+---
 
-Inicia el servidor local con:
+## ▶️ Run the Simulation
 
+Start the local server with:
+
+```bash
 python main.py
+```
 
+The API will be available at:  
+👉 **http://localhost:8000**
 
-La aplicación estará disponible en:
-👉 http://localhost:8000
+Interactive docs:  
+👉 **http://localhost:8000/docs**
 
-Para probar los endpoints interactivos, abre:
-👉 http://localhost:8000/docs
+Endpoints:
+- `/api/rooms` → list of rooms
+- `/api/staff` → list of staff
+- `/api/reservations` → active reservations
 
-Endpoints disponibles:
+---
 
-/api/rooms → lista de habitaciones
+## 🔄 Example Event
 
-/api/staff → lista de empleados
+```json
+{
+  "event": "guest_checkout",
+  "timestamp": "2025-11-06T10:00:00Z",
+  "room_id": 312,
+  "building_id": 3,
+  "reservation_id": 5521,
+  "trigger": "system",
+  "actions": ["create_cleaning_task"]
+}
+```
 
-/api/reservations → reservas activas
+---
 
-🧠 Próximas fases
+## 🧮 Future Roadmap
 
-Fase 2: Motor de tareas de limpieza (housekeeping engine)
+| Phase | Goal |
+|-------|------|
+| 2️⃣ | Housekeeping engine (cleaning durations, automatic assignments). |
+| 3️⃣ | Efficiency metrics and workload analysis. |
+| 4️⃣ | Visual dashboard for live monitoring. |
+| 5️⃣ | External integrations (real booking data, maintenance, sensors). |
 
-Fase 3: Métricas y panel visual (ocupación, productividad, eficiencia)
+---
 
-Fase 4: Integraciones externas (reservas, mantenimiento, IoT, etc.)
+## 🤝 Contributing
 
-🤝 Contribuciones
+Open to contributions!
 
-El proyecto está pensado como open source.
-Si deseas contribuir:
+1. Fork the repo  
+2. Create a feature branch (`git checkout -b feature/new-functionality`)  
+3. Commit your changes and open a Pull Request
 
-Haz un fork del repositorio.
+---
 
-Crea una rama para tu feature o fix (git checkout -b feature/nueva-funcionalidad).
+## 📄 License
 
-Realiza un Pull Request describiendo tus cambios.
+Licensed under the **MIT License**.
 
-📄 Licencia
+---
 
-Distribuido bajo licencia MIT.
-Consulta el archivo LICENSE
- para más detalles.
+## 💡 Author
 
-💡 Autor
-
-Desarrollado por Xavier Alfeirán
-Mindware / WebRoster Labs – 2025
+Developed by **Xavier Alfeirán**  
+Mindware / WebRoster Labs – 2025  
 Cancún, México 🌴
+
+> “Simulate to understand, model to optimize.”
