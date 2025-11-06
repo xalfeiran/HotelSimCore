@@ -1,0 +1,25 @@
+hotel:
+  name: "Hotel Simulado Riviera"
+  num_buildings: 3
+  rooms_per_building: 40
+
+room_types:
+  - type: "standard"
+    ratio: 0.6
+    clean_time: 30     # minutos
+  - type: "premium"
+    ratio: 0.3
+    clean_time: 45
+  - type: "suite"
+    ratio: 0.1
+    clean_time: 60
+
+staff:
+  supervisors: 2
+  housekeepers: 8
+  max_tasks_per_shift: 10
+
+simulation:
+  reservation_interval_seconds: 15
+  avg_stay_days: 3
+  seed: 42
